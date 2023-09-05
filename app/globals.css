@@ -1,3 +1,76 @@
 @tailwind base;
 @tailwind components;
+
+
+:root {
+    /* this are placeholders for future vars, the vars
+    will be mapped to the tailwind config for ease of use
+    while developing */
+    --primary-color: #961aa2;
+    --primary-color-hover: #66126e; 
+    --secondary-color: #cc8844;
+    --nav-link-color: #FFFFFFE6;
+
+  }
+
+  /* Base - variables, html elements
+  TODO: Move body into another file? */
+
+  @layer base {
+    body {
+        background-color: #F5F5F5;
+ 
+      }
+  }
+
+
+  /* COMPONENTS */
+@layer components {
+
+/* BUTTON */
+
+.btn {
+    @apply w-full border shadow py-3 px-6 font-semibold text-lg rounded bg-blue-500 text-white
+}
+
+/* FORM CSS */
+form {
+ @apply w-full max-w-lg m-auto py-10 mt-10 px-10 border border-[#ddd] border-transparent bg-[#FFFFFF] shadow-md
+}
+
+.form__field-container  {
+    @apply mb-10
+}
+
+.form__label {
+    @apply text-gray-600 font-medium
+}
+
+.form__input {
+    @apply border-solid border-gray-300 border py-2 px-4 w-full rounded
+}
+
+.form__error {
+     @apply text-sm text-red-400
+}
+
+.form__submit-button {
+    @apply bg-primary hover:bg-primary-hover text-green-100 
+}
+
+}
+
+
+/* UTILITIES */
+/* the @tailwind directive is here so that any utility class supercededes all other classes */
 @tailwind utilities;
+@layer utilities {
+    /* .container-nav {
+        @apply mx-auto  px-4
+    } */
+
+    .nav-link {
+        @apply text-nav-link text-2xl py-2 px-4 hover:text-white
+    }
+
+}
