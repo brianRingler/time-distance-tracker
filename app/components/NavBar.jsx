@@ -46,7 +46,7 @@ export default function Navbar() {
           <Link
             key={link.id}
             href={link.url}
-            className="text-primary hover:text-text-dark hover:font-bold hover:bg-primary-light hover:bg-opacity-30 px-2 py-1 rounded-md transition duration-300"
+            className="text-white hover:text-text-dark hover:font-bold hover:bg-primary-light hover:bg-opacity-30 px-2 py-1 rounded-md transition duration-300"
           >
             {link.title}
           </Link>
