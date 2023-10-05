@@ -82,6 +82,7 @@ export default function RegisterForm2({ title }) {
         <input
           placeholder="Email"
           className="form__input"
+          type="email"
           {...register("email", {
             required: "Email required",
           })}
@@ -95,6 +96,7 @@ export default function RegisterForm2({ title }) {
         <input
           placeholder="Password"
           className="form__input"
+          type="password"
           {...register("password", {
             required: "Password required",
           })}
@@ -107,6 +109,7 @@ export default function RegisterForm2({ title }) {
       <div className="form__field-container">
         <input
           placeholder="Confirm Password"
+          type="password"
           className="form__input"
           {...register("password2", { required: "Password required" })}
         />
