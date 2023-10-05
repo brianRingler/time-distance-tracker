@@ -51,7 +51,7 @@ export async function POST(request) {
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const registerNewUser = {
-    text: `INSERT INTO user_profiles (first_name, last_name, user_name_email, pass)
+    text: `INSERT INTO user_profiles (first_name, last_name, user_name_email, password)
            VALUES ($1, $2, $3, $4);`,
     values: [firstName, lastName, email, hashedPassword],
   };
