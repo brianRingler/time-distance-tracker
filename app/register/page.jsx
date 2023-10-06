@@ -1,8 +1,8 @@
-import RegisterForm2 from "./RegisterForm.jsx";
+import RegisterForm from "./RegisterForm.jsx";
 export default function Page() {
   return (
     <div>
-      <RegisterForm2 title="Register" />
+      <RegisterForm title="Register" />
     </div>
   );
 }

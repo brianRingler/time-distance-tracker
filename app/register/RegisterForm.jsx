@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import MessageList from "components/MessageList";
 
-export default function RegisterForm2({ title }) {
+export default function RegisterForm({ title }) {
   const [data, setData] = useState();
   const [errMsgs, setErrMsgs] = useState(null);
   const router = useRouter();
