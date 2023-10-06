@@ -60,7 +60,10 @@ export default function RegisterForm2({ title }) {
         <input
           placeholder="First Name"
           className="border-solid border-gray-300 border py-2 px-4 w-full rounded"
-          {...register("firstName", { required: "First Name is required" })}
+          {...register("firstName", {
+            required: "First Name is required",
+            minLength: 2,
+          })}
         />
         {errors.firstName?.message && (
           <p className="text-sm text-red-400">{errors.firstName.message}</p>
@@ -71,7 +74,10 @@ export default function RegisterForm2({ title }) {
         <input
           placeholder="Last Name"
           className="form__input"
-          {...register("lastName", { required: "Last Name is required" })}
+          {...register("lastName", {
+            required: "Last Name is required",
+            minLength: 2,
+          })}
         />
         {errors.lastName?.message && (
           <p className="form__error">{errors.lastName.message}</p>
@@ -99,6 +105,7 @@ export default function RegisterForm2({ title }) {
           type="password"
           {...register("password", {
             required: "Password required",
+            minLength: 8,
           })}
         />
         {errors.password?.message && (
@@ -111,7 +118,10 @@ export default function RegisterForm2({ title }) {
           placeholder="Confirm Password"
           type="password"
           className="form__input"
-          {...register("password2", { required: "Password required" })}
+          {...register("password2", {
+            required: "Password required",
+            minLength: 8,
+          })}
         />
         {errors.password2?.message && (
           <p className="form__error">{errors.password2.message}</p>
