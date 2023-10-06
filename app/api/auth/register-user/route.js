@@ -35,13 +35,18 @@ export async function POST(request) {
   }
 
   // Check if user email already exists
-  const existingUser = await pool.query(
-    "SELECT * FROM user_profiles WHERE user_name_email = $1",
-    [email]
-  );
+  try {
+    const existingUser = await pool.query(
+      "SELECT * FROM user_profiles WHERE user_name_email = $1",
+      [email]
+    );
 
-  if (existingUser.rows.length > 0) {
-    errors.push({ message: "Email already exists" });
+    if (existingUser.rows.length > 0) {
+      errors.push({ message: "Email already exists" });
+    }
+  } catch (err) {
+    console.log(`Register Page Error when querying the database for email`);
+    return new NextResponse({ error: `${err.message}` }, { status: 500 });
   }
 
   if (errors.length > 0) {
@@ -59,7 +64,7 @@ export async function POST(request) {
     await pool.query(registerNewUser);
     return new NextResponse({ message: "Success" }, { status: 200 });
   } catch (err) {
-    console.log(`Error when posting to the new database`);
+    console.log(`Register Page Error when posting to the new database`);
     return new NextResponse({ error: `${err.message}` }, { status: 500 });
   }
 }
