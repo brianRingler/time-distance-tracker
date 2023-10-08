@@ -34,6 +34,7 @@ export default function Month() {
       try {
         const res = await fetch("api/get-trips", { cache: "no-store" });
         const userTrips = await res.json();
+        console.log('user trips: ', userTrips);
         setTrips(userTrips);
         console.log(trips);
       } catch (error) {
@@ -63,15 +64,8 @@ export default function Month() {
 
   return (
     <TripContextProvider>
-      <div className="px-20">
-        <div className="flex justify-between">
-          <button className="mb-10 bg-blue-400 text-white font-bold px-4 py-2 rounded-lg">
-            FILTER
-          </button>
-          <button className="mb-10 bg-blue-400 text-white font-bold px-4 py-2 rounded-lg">
-            AUGUST
-          </button>
-        </div>
+      <div className="container">
+
         {trips !== null &&
           days.map((day, index) => {
             const currentTrips = trips.filter((trip) => {
@@ -81,7 +75,7 @@ export default function Month() {
 
             return (
               <div
-                className="bg-blue-100 w-full border-8 px-4 py-4"
+              className=" w-full py-4"
                 key={index}
               >
                 <DateRow date={day} tripsData={currentTrips} />

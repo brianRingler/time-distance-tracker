@@ -12,18 +12,32 @@ export default function Trips({ tripsData, date }) {
     <div>
       {tripsData.map((item, index) => {
         return (
-          <div key={index} className="mb-10">
+          <div key={index} className="w-full border-b-2 bg-white py-7">
             <Trip tripData={item} />
           </div>
         );
       })}
 
       {addTripId === null && (
-        <button onClick={() => handleAddTrip(date)}>ADD TRIP</button>
+        <div className="pt-4">
+          <button
+            onClick={() => handleAddTrip(date)}
+            className="text-primary font-semibold"
+          >
+            ADD TRIP
+          </button>
+        </div>
       )}
 
       {addTripId !== null && addTripId !== date && (
-        <button onClick={() => handleAddTrip(date)}>ADD TRIP</button>
+        <div className="pt-4">
+          <button
+            className="text-primary font-extrabold"
+            onClick={() => handleAddTrip(date)}
+          >
+            ADD TRIP
+          </button>
+        </div>
       )}
 
       {addTripId === date ? <TripForm /> : null}
