@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import Link from "next/Link";
+import Link from "next/link";
 import MessageList from "@/components/MessageList";
 
 export default function LoginForm({ title }) {
