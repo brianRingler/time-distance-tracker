@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { useRouter } from "next/navigation";
 import bcrypt from "bcrypt";
 import { pool } from "models/dbconfig";
 
@@ -21,7 +22,13 @@ const handler = NextAuth({
           const res = await pool.query(queryUser);
           //const user = res.rows[0];
           const userEmail = res?.rows[0]?.user_name_email;
-          const userHashedPass = res?.rows[0]?.pass;
+          const userHashedPass = res?.rows[0]?.password;
+          console.log(
+            "GET user_name_email and hashed password from the database"
+          );
+          console.log(userEmail);
+          console.log(credentials.password);
+          console.log(userHashedPass);
           const user = {
             id: res?.rows[0].id,
             firstName: res?.rows[0].first_name,
@@ -46,8 +53,10 @@ const handler = NextAuth({
             throw new Error("User not found!");
           }
         } catch (err) {
-          console.log(`Catch All Errors => ${err}`);
-          throw new Error(err);
+          console.log(
+            `Catch All Errors - route to 'error-page'. Error Msg: ${err}`
+          );
+          router.push("/error-page");
         }
       },
     }),

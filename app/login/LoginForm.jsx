@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import Link from "next/Link";
+import { useSession, signIn } from "next-auth/react";
+import Link from "next/link";
 import MessageList from "@/components/MessageList";
 
 export default function LoginForm({ title }) {
@@ -35,6 +35,7 @@ export default function LoginForm({ title }) {
         router.push("/trips");
       } else {
         // Handle unsuccessful login
+        console.log(`Error LoginForm ${res.error})`);
         setErrMsgs({ message: res.error });
       }
     } catch (err) {
