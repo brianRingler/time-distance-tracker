@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import Link from "next/Link";
+import Link from "next/link";
 import MessageList from "components/MessageList";
 
 export default function RegisterForm({ title }) {
