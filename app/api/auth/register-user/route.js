@@ -60,6 +60,7 @@ export async function POST(request) {
            VALUES ($1, $2, $3, $4);`,
     values: [firstName, lastName, email, hashedPassword],
   };
+
   try {
     await pool.query(registerNewUser);
     return new NextResponse({ message: "Success" }, { status: 200 });

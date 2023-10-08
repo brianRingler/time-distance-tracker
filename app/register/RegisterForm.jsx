@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import Link from "next/Link";
 import MessageList from "components/MessageList";
 
 export default function RegisterForm({ title }) {
@@ -54,7 +55,12 @@ export default function RegisterForm({ title }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="mb-10">{title}</div>
+      <h1
+        id="login-header"
+        className="text-4xl font-bold text-primary mb-4 text-center"
+      >
+        {title}
+      </h1>
 
       <div className="form__field-container">
         <input
@@ -131,6 +137,12 @@ export default function RegisterForm({ title }) {
       {errMsgs && <MessageList errMsgs={errMsgs} />}
 
       <button className=" btn form__submit-button">Submit</button>
+      <Link
+        href="/login"
+        className="flex justify-center text-primary my-2 hover:font-bold"
+      >
+        Go To Login
+      </Link>
     </form>
   );
 }
