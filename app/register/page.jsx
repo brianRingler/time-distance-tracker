@@ -1,8 +1,23 @@
+"use client";
+import { useEffect, useState } from "react";
 import RegisterForm from "./RegisterForm.jsx";
-export default function RegisterPage() {
+import Modal from "@/components/UI/Modal.jsx";
+import ReCaptcha from "@/components/ReCaptcha.jsx";
+
+export default function Page() {
+  const [humanVerified, setHumanVerified] = useState(false);
+
+  useEffect(() => {}, [humanVerified]);
+
   return (
     <div>
-      <RegisterForm title="Register" />
+      {!humanVerified ? (
+        <Modal humanVerified={humanVerified}>
+          <ReCaptcha setHumanVerified={setHumanVerified} />
+        </Modal>
+      ) : (
+        <RegisterForm title="Register" />
+      )}
     </div>
   );
 }
