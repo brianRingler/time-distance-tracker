@@ -16,12 +16,9 @@ export default function LoginForm({ title }) {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
-    setError,
     clearErrors,
     formState: { errors },
-    formState,
   } = useForm();
 
   const onSubmit = async (e) => {
@@ -41,9 +38,9 @@ export default function LoginForm({ title }) {
         let errorMessage = res.error;
 
         if (errorMessage === "Wrong Password!") {
-          setErrMsgs("Incorrect password. Please try again.");
+          setErrMsgs("Either password or user email is incorrect.");
         } else if (errorMessage === "User not found!") {
-          setErrMsgs("User not found. Please check your email.");
+          setErrMsgs("Either password or user email is incorrect.");
         } else {
           setErrMsgs("An error occurred. Please try again.");
         }
@@ -51,18 +48,7 @@ export default function LoginForm({ title }) {
         throw new Error(errorMessage);
       }
     } catch (error) {
-      setError("backendError", {
-        type: "server",
-        message: error.message,
-      });
-
-      if (error.message == "Wrong Password!") {
-        reset({ password: "" });
-      } else {
-        reset({ keepValues: true });
-      }
-
-      clearErrors();
+      reset()
     }
   };
 
