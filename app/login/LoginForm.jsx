@@ -11,13 +11,15 @@ import MessageList from "@/components/MessageList";
 
 export default function LoginForm({ title }) {
   const [errMsgs, setErrMsgs] = useState(null);
+
   const router = useRouter();
   const { data: session, status } = useSession();
+
   const {
     register,
     handleSubmit,
-    watch,
     reset,
+    clearErrors,
     formState: { errors },
   } = useForm();
 
@@ -31,18 +33,24 @@ export default function LoginForm({ title }) {
         redirect: false,
       });
 
-      if (res.ok) {
-        // Handle successful login
-        reset();
+      if (res.error === null) {
+        clearErrors();
         router.push("/trips");
       } else {
-        // Handle unsuccessful login
-        console.log(`Error LoginForm ${res.error})`);
-        setErrMsgs({ message: res.error });
+        let errorMessage = res.error;
+
+        if (errorMessage === "Wrong Password!") {
+          setErrMsgs("Either password or user email is incorrect.");
+        } else if (errorMessage === "User not found!") {
+          setErrMsgs("Either password or user email is incorrect.");
+        } else {
+          setErrMsgs("An error occurred. Please try again.");
+        }
+
+        throw new Error(errorMessage);
       }
-    } catch (err) {
-      console.log(`Error in app/login/lLoginForm.jsx ${err}`);
-      router.push("/error-page");
+    } catch (error) {
+      reset()
     }
   };
 
@@ -77,7 +85,10 @@ export default function LoginForm({ title }) {
         )}
       </div>
 
+      {errMsgs && <p className="text-sm text-red-400">{errMsgs}</p>}
+
       <button className="btn form__submit-button">Submit</button>
+
       <button
         type="button"
         id="sub-btn-google"
@@ -86,6 +97,7 @@ export default function LoginForm({ title }) {
       >
         Sign in with Google
       </button>
+
       <Link
         href="/register"
         className="flex justify-center text-primary my-2 hover:font-bold"
