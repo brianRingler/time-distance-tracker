@@ -9,14 +9,19 @@ import MessageList from "@/components/MessageList";
 
 export default function LoginForm({ title }) {
   const [errMsgs, setErrMsgs] = useState(null);
+
   const router = useRouter();
   const { data: session, status } = useSession();
+
   const {
     register,
     handleSubmit,
     watch,
     reset,
+    setError,
+    clearErrors,
     formState: { errors },
+    formState,
   } = useForm();
 
   const onSubmit = async (e) => {
@@ -29,18 +34,35 @@ export default function LoginForm({ title }) {
         redirect: false,
       });
 
-      if (res.ok) {
-        // Handle successful login
-        reset();
+      if (res.error === null) {
+        clearErrors();
         router.push("/trips");
       } else {
-        // Handle unsuccessful login
-        console.log(`Error LoginForm ${res.error})`);
-        setErrMsgs({ message: res.error });
+        let errorMessage = res.error;
+
+        if (errorMessage === "Wrong Password!") {
+          setErrMsgs("Incorrect password. Please try again.");
+        } else if (errorMessage === "User not found!") {
+          setErrMsgs("User not found. Please check your email.");
+        } else {
+          setErrMsgs("An error occurred. Please try again.");
+        }
+
+        throw new Error(errorMessage);
       }
-    } catch (err) {
-      console.log(`Error in app/login/lLoginForm.jsx ${err}`);
-      router.push("/error-page");
+    } catch (error) {
+      setError("backendError", {
+        type: "server",
+        message: error.message,
+      });
+
+      if (error.message == "Wrong Password!") {
+        reset({ password: "" });
+      } else {
+        reset({ keepValues: true });
+      }
+
+      clearErrors();
     }
   };
 
@@ -75,7 +97,10 @@ export default function LoginForm({ title }) {
         )}
       </div>
 
+      {errMsgs && <p className="text-sm text-red-400">{errMsgs}</p>}
+
       <button className="btn form__submit-button">Submit</button>
+
       <button
         type="button"
         id="sub-btn-google"
@@ -84,6 +109,7 @@ export default function LoginForm({ title }) {
       >
         Sign in with Google
       </button>
+
       <Link
         href="/register"
         className="flex justify-center text-primary my-2 hover:font-bold"

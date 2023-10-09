@@ -1,9 +1,9 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { useRouter } from "next/navigation";
 import bcrypt from "bcrypt";
 import { pool } from "models/dbconfig";
+
 
 const handler = NextAuth({
   providers: [
@@ -20,23 +20,24 @@ const handler = NextAuth({
           };
           // query db checking for user email and password 'pass'
           const res = await pool.query(queryUser);
-          //const user = res.rows[0];
+          // const user = res.rows[0];
+          // console.log('user returned from query: ', user)
           const userEmail = res?.rows[0]?.user_name_email;
           const userHashedPass = res?.rows[0]?.password;
           console.log(
             "GET user_name_email and hashed password from the database"
           );
-          console.log(userEmail);
-          console.log(credentials.password);
-          console.log(userHashedPass);
-          const user = {
+          console.log('user email from server >> ',userEmail);
+          console.log('user hashed password from server >> ',userHashedPass);
+
+          if (userEmail !== undefined) {
+              //ISSUE: handle case user not found when creating this object, moved this user initialization into if block
+           let user = {
             id: res?.rows[0].id,
             firstName: res?.rows[0].first_name,
             lastName: res?.rows[0].last_name,
             email: res?.rows[0].user_name_email,
           };
-
-          if (userEmail) {
             const isPasswordCorrect = await bcrypt.compare(
               credentials.password,
               userHashedPass
@@ -45,8 +46,9 @@ const handler = NextAuth({
             if (isPasswordCorrect) {
               return user;
             } else {
-              console.log("throw new Error => Wrong Credentials Provided");
-              throw new Error("Wrong Credentials!");
+              console.log("throw new Error => Wrong Password Provided");
+              //NOTE: client uses this message to identify and  handle error
+              throw new Error("Wrong Password!");
             }
           } else {
             console.log("throw new Error => User Not Found");
@@ -56,7 +58,10 @@ const handler = NextAuth({
           console.log(
             `Catch All Errors - route to 'error-page'. Error Msg: ${err}`
           );
-          router.push("/error-page");
+
+          //NOTE: error must be rethrown here or it will not reach the signIn function on the client side. There is some what to set the status, but for now, it returns status as "200" which is not correct.
+          throw err;
+          
         }
       },
     }),
@@ -87,8 +92,8 @@ const handler = NextAuth({
   },
 
   pages: {
-    //error: "/login",
     signIn: "/login",
+    // error: "/login",
     //signOut:'/',
   },
 });
