@@ -6,8 +6,12 @@ be server side code. More details:
 https://codevoweb.com/setup-and-use-nextauth-in-nextjs-13-app-directory/
 */
 
-import { SessionProvider } from "next-auth/react";
+// import { SessionProvider } from "next-auth/react";
 
-export default function AuthProvider({ children }) {
-  return <SessionProvider>{children}</SessionProvider>;
-}
+// export default function SessionProvider({ children }) {
+//   return <SessionProvider>{children}</SessionProvider>;
+// }
+
+"use client";
+import { SessionProvider } from "next-auth/react";
+export default SessionProvider;

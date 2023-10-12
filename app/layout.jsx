@@ -1,6 +1,8 @@
 import "./globals.css";
+import { getServerSession } from "next-auth";
+import SessionProvider from "./components/SessionProvider";
 import NavBar from "./components/NavBar";
-import AuthProvider from "./components/AuthProvider";
+// import NavBar2 from "./components/NavBar2"
 
 export const metadata = {
   title: "Simply Track",
@@ -8,14 +10,18 @@ export const metadata = {
     "The best place to track your hours logged and distance traveled!",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+
+  const session = await getServerSession();
+  console.log('session: ',session)
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
+        <SessionProvider>
           <NavBar />
+          {/* <NavBar2 /> */}
           {children}
-        </AuthProvider>
+        </SessionProvider>
       </body>
     </html>
   );

@@ -1,57 +1,60 @@
+"use client";
 import Link from "next/link";
-import Image from "next/image";
-import Hamburger from "./Hamburger";
+// import DropDownMenu from './MenuBarRadix1';
+import { signOut, useSession } from "next-auth/react";
+import AccountMenu from "./AccountMenu";
 
-const links = [
-  {
-    id: 1,
-    title: "Welcome",
-    url: "/",
-  },
-  {
-    id: 2,
-    title: "Trips",
-    url: "/trips",
-  },
-  {
-    id: 3,
-    title: "Locations",
-    url: "/locations",
-  },
-  {
-    id: 4,
-    title: "Register",
-    url: "/register",
-  },
-  {
-    id: 5,
-    title: "Login",
-    url: "/login",
-  },
-];
+export default function NavBar() {
+  const { data: session } = useSession();
 
-export default function Navbar() {
+  const handleSignOut = () => {
+    signOut({ redirect: true, callbackUrl: '/' });
+  };
+
+  if (session) {
+    console.log("session in navbar: ", session);
+  } else console.log("no session in navbar");
+
   return (
-    <nav className="bg-primary h-16 flex items-center justify-between text-xl px-8">
-      <div className="flex items-center">
-        <Image
-          src="/images/car-header.jpg"
-          alt="Image Car"
-          height={50}
-          width={50}
-        />
-      </div>
-      <div className="flex items-center space-x-4">
-        {links.map((link) => (
-          <Link
-            key={link.id}
-            href={link.url}
-            className="text-white hover:text-text-dark hover:font-bold hover:bg-primary-light hover:bg-opacity-30 px-2 py-1 rounded-md transition duration-300"
-          >
-            {link.title}
+    <nav className="py-3 bg-primary">
+      <div className="container">
+        <div className="flex items-center">
+          <Link href="/" className=" px-[1rem] mr-4  bg-gray-200">
+            LOGO
           </Link>
-        ))}
-        <Hamburger links={links} />
+          <div className="nav-collapse hidden  w-full justify-between md:flex md:items-center ">
+            <ul className="flex flex-row">
+              <li>
+                <Link href="/trips" className="nav-link">
+                  <span>Trips</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="nav-link">
+                  <span>Locations</span>
+                </Link>
+              </li>
+            </ul>
+
+            <div className=" ml-auto flex flex-row items-center">
+                <AccountMenu />
+              {!session ? (
+                <Link className="btn" href="/login">
+                  <button>Log In / Register</button>
+                </Link>
+              ) : null}
+
+              {session && (
+                <button className="w-30 h-20 bg-yellow-200" onClick={handleSignOut}>
+                  sign out
+                </button>
+              )}
+            </div>
+          </div>
+          <button className="bg-yellow-500 border-0 py-4 px-3  md:mt-0 md:hidden ml-auto">
+            Hamburger Menu
+          </button>
+        </div>
       </div>
     </nav>
   );

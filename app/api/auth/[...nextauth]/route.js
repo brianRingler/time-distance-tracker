@@ -76,6 +76,10 @@ const handler = NextAuth({
     maxAge: 30 * 24 * 60 * 60,
   },
 
+  //TODO: add jwt sign in key to env
+  //TODO: Store jwt in postgres?
+  //JWT with next-auth explained here: https://www.phind.com/agent?cache=clnn84wl9000hmm07z176vite
+
   jwt: {
     signingKey: process.env.JWT_SECRET,
   },
