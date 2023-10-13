@@ -2,7 +2,6 @@
 import Link from "next/link";
 // import DropDownMenu from './MenuBarRadix1';
 import { signOut, useSession } from "next-auth/react";
-import AccountMenu from "./AccountMenu";
 
 export default function NavBar() {
   const { data: session } = useSession();
@@ -37,7 +36,7 @@ export default function NavBar() {
             </ul>
 
             <div className=" ml-auto flex flex-row items-center">
-                <AccountMenu />
+         
               {!session ? (
                 <Link className="btn" href="/login">
                   <button>Log In / Register</button>
