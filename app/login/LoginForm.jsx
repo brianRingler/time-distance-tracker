@@ -43,6 +43,8 @@ export default function LoginForm({ title }) {
           setErrMsgs("Either password or user email is incorrect.");
         } else if (errorMessage === "User not found!") {
           setErrMsgs("Either password or user email is incorrect.");
+        } else if (errorMessage === "Email not authenticated!") {
+          setErrMsgs("Email has not been validated. Check email inbox.");
         } else {
           setErrMsgs("An error occurred. Please try again.");
         }
@@ -50,6 +52,11 @@ export default function LoginForm({ title }) {
         throw new Error(errorMessage);
       }
     } catch (error) {
+      if (errorMessage === "Email has not been validated. Check email inbox.") {
+        console.log("Email has not been validated");
+      } else {
+        console.log("Email, password or something else was an issue.");
+      }
       reset();
     }
   };
