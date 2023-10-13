@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import MessageList from "components/MessageList";
 
@@ -137,6 +138,10 @@ export default function RegisterForm({ title }) {
       {errMsgs && <MessageList errMsgs={errMsgs} />}
 
       <button className=" btn form__submit-button">Submit</button>
+      <button className=" btn form__submit-button my-4">
+        Register with Google
+      </button>
+
       <Link
         href="/login"
         className="flex justify-center text-primary my-2 hover:font-bold"

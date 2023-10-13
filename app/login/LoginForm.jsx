@@ -50,7 +50,7 @@ export default function LoginForm({ title }) {
         throw new Error(errorMessage);
       }
     } catch (error) {
-      reset()
+      reset();
     }
   };
 

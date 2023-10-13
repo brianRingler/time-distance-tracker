@@ -4,7 +4,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { pool } from "models/dbconfig";
 
-
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
@@ -24,30 +23,31 @@ const handler = NextAuth({
           // console.log('user returned from query: ', user)
           const userEmail = res?.rows[0]?.user_name_email;
           const userHashedPass = res?.rows[0]?.password;
-          console.log(
-            "GET user_name_email and hashed password from the database"
-          );
-          console.log('user email from server >> ',userEmail);
-          console.log('user hashed password from server >> ',userHashedPass);
+          const emailAuth = res?.rows[0].email_authenticated;
 
           if (userEmail !== undefined) {
-              //ISSUE: handle case user not found when creating this object, moved this user initialization into if block
-           let user = {
-            id: res?.rows[0].id,
-            firstName: res?.rows[0].first_name,
-            lastName: res?.rows[0].last_name,
-            email: res?.rows[0].user_name_email,
-          };
+            //ISSUE: handle case user not found when creating this object, moved this user initialization into if block
+            let user = {
+              id: res?.rows[0].id,
+              firstName: res?.rows[0].first_name,
+              lastName: res?.rows[0].last_name,
+              email: res?.rows[0].user_name_email,
+              emailAuth: res?.rows[0].email_authenticated,
+            };
             const isPasswordCorrect = await bcrypt.compare(
               credentials.password,
               userHashedPass
             );
 
             if (isPasswordCorrect) {
-              return user;
+              if (emailAuth) {
+                return user;
+              } else {
+                console.log("throw new Error => Email not authenticated");
+                throw new Error("Email not authenticated!");
+              }
             } else {
               console.log("throw new Error => Wrong Password Provided");
-              //NOTE: client uses this message to identify and  handle error
               throw new Error("Wrong Password!");
             }
           } else {
@@ -59,9 +59,8 @@ const handler = NextAuth({
             `Catch All Errors - route to 'error-page'. Error Msg: ${err}`
           );
 
-          //NOTE: error must be rethrown here or it will not reach the signIn function on the client side. There is some what to set the status, but for now, it returns status as "200" which is not correct.
+          //NOTE: error must be be thrown here or it will not reach the signIn function on the client side. There is some what to set the status, but for now, it returns status as "200" which is not correct.
           throw err;
-          
         }
       },
     }),
