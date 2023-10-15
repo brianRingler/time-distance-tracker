@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { UilUserCircle } from "@iconscout/react-unicons";
 import { signOut } from "next-auth/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,8 +16,8 @@ export default function UserDropdown() {
   }
   return (
     <div className="inline-flex rounded-md items-center">
-      <a onClick={handleDropDown} className="cursor-pointer">
-        <UilUserCircle size="26" color="#FFFFFF" />
+      <a onClick={handleDropDown} className="cursor-pointer text-white">
+        <FontAwesomeIcon icon={faUser} size="xl"  />
       </a>
       <div className="relative">
 

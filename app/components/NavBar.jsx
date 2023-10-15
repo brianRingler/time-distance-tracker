@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import UserDropdown from "./UserDropdown";
-import { UilBars } from "@iconscout/react-unicons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 export default function NavBar() {
   const { data: session } = useSession();
 
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-
 
   const handleMenu = () => {
     setMenuIsOpen((prev) => !prev);
@@ -27,14 +27,25 @@ export default function NavBar() {
       }
     };
 
+    const handleClickOutside = (event) => {
+      if (
+        (menuIsOpen && !document.getElementById("sidebar-menu")) ||
+        !document.getElementById("hamburger-menu").contains(event.target)
+      ) {
+        setMenuIsOpen(false);
+      }
+    };
+
     window.addEventListener("resize", checkWindowSize);
+    document.addEventListener("mousedown", handleClickOutside);
 
     checkWindowSize();
 
     return () => {
       window.removeEventListener("resize", checkWindowSize);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [menuIsOpen]);
 
   return (
     <nav className="py-3 bg-primary px-10 md:px-20 ">
@@ -74,18 +85,24 @@ export default function NavBar() {
               </Link>
             ) : null}
           </div>
-
-          <button
-            className=" border-0  md:mt-0 md:hidden ml-4"
-            onClick={handleMenu}
-          >
-            <UilBars size="30" color="#FFFFFF" />
-          </button>
         </div>
-        {menuIsOpen && (
-          <div onClick={handleMenu} className="absolute h-screen top-[72px] right-0 w-80 bg-white shadow-lg" >
-            <div className={`${session ? "hidden" : ""}`}>
-              <ul className="">
+
+        <button
+          onClick={handleMenu}
+          id="hamburger-menu"
+          className="relative z-10 block md:hidden text-white"
+        >
+          {/* Hamburger icon */}
+          <FontAwesomeIcon icon={faBars} size="xl" />
+          {/* Menu */}
+          <nav
+            id="sidebar-menu"
+            className={`fixed transform top-[72px] right-0 w-full md:w-1/2 h-full max-w-md px-6 py-4 bg-white shadow-lg overflow-y-auto transition-transform duration-200 ease-in-out ${
+              !menuIsOpen ? "translate-x-full" : "tranlate-x-0"
+            } md:translate-x-0 md:static md:inset-auto  md:transition-none`}
+          >
+            {!session && (
+              <ul className="text-black">
                 <li className="cursor-pointer">
                   <Link href="/login">Log In</Link>
                 </li>
@@ -93,9 +110,10 @@ export default function NavBar() {
                   <Link href="/register">Register</Link>
                 </li>
               </ul>
-            </div>
-            <div div className={`${!session ? "hidden" : ""}`}>
-              <ul className="">
+            )}
+
+            {session && (
+              <ul className="text-black">
                 <li>My Account</li>
                 <li>
                   <Link href="/trips">Trips</Link>
@@ -109,9 +127,9 @@ export default function NavBar() {
                 </li>
                 <li></li>
               </ul>
-            </div>
-          </div>
-        )}
+            )}
+          </nav>
+        </button>
       </div>
     </nav>
   );
