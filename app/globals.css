@@ -16,6 +16,16 @@
   /* Base - variables, html elements
   TODO: Move body into another file? */
 
+  @keyframes slide-in {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  
+
   @layer base {
     body {
         background-color: #F5F5F5;
@@ -70,7 +80,7 @@ form {
     } */
 
     .nav-link {
-        @apply text-nav-link text-2xl py-2 px-4 hover:text-white
+        @apply text-nav-link text-xl py-2 hover:text-white
     }
 
 }

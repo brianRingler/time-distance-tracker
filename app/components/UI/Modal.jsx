@@ -4,8 +4,8 @@ import Link from "next/link";
 import ReCaptcha from "../ReCaptcha";
 import { useState } from "react";
 
-export default function Modal({ children }) {
-  const [showModal, setShowModal] = useState(true);
+export default function Modal({ children, showModalState }) {
+  const [showModal, setShowModal] = useState(showModalState);
 
   return (
     <div>

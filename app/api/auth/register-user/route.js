@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import { NextResponse } from "next/server.js";
 import validator from "email-validator";
 
+
+
 export async function POST(request) {
   const { firstName, lastName, email, password, password2 } =
     await request.json();

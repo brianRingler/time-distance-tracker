@@ -1,8 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 
+
 // export const metadata = {
-//   title: "Home Page",
+//   title: "Time Distance Tracker",
 // };
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col items-center min-h-screen">
+
       <h1 className="text-4xl font-bold text-primary mb-4 mt-12">
         Simply Track Miles
       </h1>
